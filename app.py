@@ -56,14 +56,38 @@ cocktails = [
         "category": "Vodka",
         "premium": True,
         "ingredients": [
-            "2½ oz GREY GOOSE® Vodka",
+            "1 oz GREY GOOSE® Vodka",
+            "1½ oz Cranberry Juice",
             "½ oz NOILLY PRAT® Dry Vermouth",
-            "Orange and Star Anise Bitters (Optional)",
-            "Clementine",
-            "Star Anise"
+            "½ oz Maple Syrup",
+            "1 spring of fresh rosemary",
+            "Orange slices",
+            "1 Star Anise"
         ],
         "instructions": [
-            "1. In a mixing glass, add GREY GOOSE® Vodka, NOILLY PRAT® Dry Vermouth, and bitters; stir with a barspoon.",
+            "1. In a mixing shaker, add GREY GOOSE® Vodka, NOILLY PRAT® Dry Vermouth, maple syrup, cranberry, and bitters; and shake.",
+            "2. Strain into a martini cocktail glass.",
+            "3. Garnish with a clementine round and star anise."
+        ],
+        "glassware": "Martini Glass",
+        "description": "A seasonal twist on the classic martini with warming star anise notes."
+    },
+     {
+        "name": "Cranberry Fizz",
+        "image": "/assets/thanksgiving-martini.jpg",
+        "category": "Mocktail",
+        "premium": True,
+        "ingredients": [
+            "1½ oz Apple cider Juice",
+            "3½ oz Cranberry Juice",
+            "½ oz NOILLY PRAT® Dry Vermouth",
+            "½ oz Maple Syrup",
+            "1 oz of sparkling water",
+            "Orange slices",
+            "1 spring of rosemary"
+        ],
+        "instructions": [
+            "1. In a mocktail glass, add apple cider, sparkling water, maple syrup, cranberry juice, and orange; and mix with bar spoon.",
             "2. Strain into a martini cocktail glass.",
             "3. Garnish with a clementine round and star anise."
         ],
