@@ -8,45 +8,101 @@ import os
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 server = app.server
 
-# # Create a default placeholder SVG
-# def create_placeholder_svg(name):
-#     return f'''
-#     <svg width="100%" height="300" xmlns="http://www.w3.org/2000/svg">
-#         <rect width="100%" height="100%" fill="black" stroke="#00FF9D" stroke-width="2"/>
-#         <text x="50%" y="50%" fill="#00FF9D" font-size="20" text-anchor="middle">{name}</text>
-#     </svg>
-#     '''
-
-# def get_image_content(image_name, item_name):
-#     """Helper function to handle image paths with multiple fallbacks"""
-#     # List of possible image extensions
-#     extensions = ['.jpg', '.png', '.jpeg', '.gif']
-    
-#     # 1. Try direct path if it starts with /assets/
-#     if image_name.startswith('/assets/'):
-#         try:
-#             with open(f".{image_name}", 'rb') as img_file:
-#                 encoded = base64.b64encode(img_file.read()).decode()
-#                 return f'data:image/jpeg;base64,{encoded}'
-#         except:
-#             pass
-
-#     # 2. Try different extensions in assets folder
-#     for ext in extensions:
-#         try:
-#             with open(f"./assets/{image_name}{ext}", 'rb') as img_file:
-#                 encoded = base64.b64encode(img_file.read()).decode()
-#                 return f'data:image/jpeg;base64,{encoded}'
-#         except:
-#             continue
-
-#     # 3. Use a placeholder from an image service
-#     placeholder_url = f"https://via.placeholder.com/400x300/000000/00FF9D?text={item_name.replace(' ', '+')}"
-    
-#     # 4. If online placeholder isn't desired, use SVG fallback
-#     svg_placeholder = create_placeholder_svg(item_name)
-#     encoded_svg = base64.b64encode(svg_placeholder.encode()).decode()
-#     return f"data:image/svg+xml;base64,{encoded_svg}"
+# Define the mocktails data
+mocktails = [
+    {
+        "name": "Virgin Mojito Sparkle",
+        "image": "virgin-mojito",
+        "category": "Mocktail",
+        "premium": True,
+        "ingredients": [
+            "Fresh Mint Leaves",
+            "1 oz Fresh Lime Juice",
+            "1 oz Simple Syrup",
+            "Club Soda",
+            "Crushed Ice",
+            "Lime Wheels",
+            "Mint Sprig for Garnish"
+        ],
+        "instructions": [
+            "1. Muddle mint leaves with simple syrup in a glass",
+            "2. Add fresh lime juice and fill glass with crushed ice",
+            "3. Top with club soda and stir gently",
+            "4. Garnish with lime wheels and mint sprig"
+        ],
+        "glassware": "Highball Glass",
+        "description": "A refreshing alcohol-free version of the classic mojito with bright citrus and mint notes"
+    },
+    {
+        "name": "Berry Hibiscus Fizz",
+        "image": "berry-hibiscus",
+        "category": "Mocktail",
+        "premium": True,
+        "ingredients": [
+            "2 oz Hibiscus Tea (chilled)",
+            "1 oz Mixed Berry Puree",
+            "½ oz Fresh Lemon Juice",
+            "½ oz Vanilla Syrup",
+            "Fever-Tree Elderflower Tonic",
+            "Fresh Berries for Garnish"
+        ],
+        "instructions": [
+            "1. Combine hibiscus tea, berry puree, lemon juice, and vanilla syrup in a shaker",
+            "2. Shake well with ice",
+            "3. Strain into a glass filled with ice",
+            "4. Top with elderflower tonic",
+            "5. Garnish with fresh berries"
+        ],
+        "glassware": "Collins Glass",
+        "description": "A sophisticated blend of floral hibiscus, sweet berries, and elegant elderflower"
+    },
+    {
+        "name": "Spiced Apple Cider Punch",
+        "image": "apple-cider",
+        "category": "Mocktail",
+        "premium": True,
+        "ingredients": [
+            "3 oz Fresh Apple Cider",
+            "1 oz Cinnamon Syrup",
+            "½ oz Fresh Lemon Juice",
+            "Ginger Beer",
+            "Cinnamon Stick",
+            "Apple Slice for Garnish"
+        ],
+        "instructions": [
+            "1. Combine apple cider, cinnamon syrup, and lemon juice in a shaker with ice",
+            "2. Shake until well-chilled",
+            "3. Strain into a glass filled with ice",
+            "4. Top with ginger beer",
+            "5. Garnish with cinnamon stick and apple slice"
+        ],
+        "glassware": "Rocks Glass",
+        "description": "A warming blend of autumn flavors with a spicy ginger kick"
+    },
+    {
+        "name": "Passion Fruit Paradise",
+        "image": "passion-fruit",
+        "category": "Mocktail",
+        "premium": True,
+        "ingredients": [
+            "2 oz Passion Fruit Puree",
+            "1 oz Coconut Cream",
+            "½ oz Fresh Lime Juice",
+            "½ oz Vanilla Syrup",
+            "Club Soda",
+            "Edible Flower for Garnish"
+        ],
+        "instructions": [
+            "1. Combine passion fruit puree, coconut cream, lime juice, and vanilla syrup in a shaker",
+            "2. Shake vigorously with ice",
+            "3. Strain into a glass filled with crushed ice",
+            "4. Top with club soda",
+            "5. Garnish with edible flower"
+        ],
+        "glassware": "Hurricane Glass",
+        "description": "A tropical paradise in a glass with sweet passion fruit and creamy coconut"
+    }
+]
 
 # Define the cocktails data
 cocktails = [
@@ -56,38 +112,14 @@ cocktails = [
         "category": "Vodka",
         "premium": True,
         "ingredients": [
-            "1 oz GREY GOOSE® Vodka",
-            "1½ oz Cranberry Juice",
+            "2½ oz GREY GOOSE® Vodka",
             "½ oz NOILLY PRAT® Dry Vermouth",
-            "½ oz Maple Syrup",
-            "1 spring of fresh rosemary",
-            "Orange slices",
-            "1 Star Anise"
+            "Orange and Star Anise Bitters (Optional)",
+            "Clementine",
+            "Star Anise"
         ],
         "instructions": [
-            "1. In a mixing shaker, add GREY GOOSE® Vodka, NOILLY PRAT® Dry Vermouth, maple syrup, cranberry, and bitters; and shake.",
-            "2. Strain into a martini cocktail glass.",
-            "3. Garnish with a clementine round and star anise."
-        ],
-        "glassware": "Martini Glass",
-        "description": "A seasonal twist on the classic martini with warming star anise notes."
-    },
-     {
-        "name": "Cranberry Fizz",
-        "image": "/assets/thanksgiving-martini.jpg",
-        "category": "Mocktail",
-        "premium": True,
-        "ingredients": [
-            "1½ oz Apple cider Juice",
-            "3½ oz Cranberry Juice",
-            "½ oz NOILLY PRAT® Dry Vermouth",
-            "½ oz Maple Syrup",
-            "1 oz of sparkling water",
-            "Orange slices",
-            "1 spring of rosemary"
-        ],
-        "instructions": [
-            "1. In a mocktail glass, add apple cider, sparkling water, maple syrup, cranberry juice, and orange; and mix with bar spoon.",
+            "1. In a mixing glass, add GREY GOOSE® Vodka, NOILLY PRAT® Dry Vermouth, and bitters; stir with a barspoon.",
             "2. Strain into a martini cocktail glass.",
             "3. Garnish with a clementine round and star anise."
         ],
@@ -438,6 +470,7 @@ wines = [
     }
 ]
 
+
 # Custom styles
 styles = {
     'page': {
@@ -491,10 +524,9 @@ styles = {
     }
 }
 
-# Welcome message and menu layout
 welcome_message = """✨ Welcome to Château Danso ✨
 
-Step into our cozy corner of mixology magic! We're thrilled to have you join us for an evening of crafted cocktails and warm hospitality. Each drink has been carefully selected and perfected to ensure your experience is nothing short of extraordinary.
+Step into our cozy corner of mixology magic! We're thrilled to have you join us for an evening of crafted cocktails, mocktails, and fine wines. Each drink has been carefully selected and perfected to ensure your experience is nothing short of extraordinary.
 
 Sit back, relax, and let us guide you through our carefully curated selection of libations.
 
@@ -517,6 +549,22 @@ Our menu features signature cocktails across different spirit categories:
 ✨ Each drink marked with a star (★) represents our premium selections.
 
 Cocktails can be customized to your preference - just ask!"""
+
+# Add a mocktails guide
+mocktails_guide = """📖 Mocktail Selection Guide 📖
+
+Our alcohol-free creations are crafted with the same care and creativity as our cocktails:
+
+🌿 Fresh & Herbal
+   Refreshing combinations with garden-fresh herbs
+
+🍓 Fruit Forward
+   Bold and vibrant fruit-based beverages
+
+✨ Each drink marked with a star (★) represents our premium selections.
+
+All mocktails can be customized to your taste preferences!"""
+
 
 def get_image_path(image_name):
     """Helper function to handle image paths"""
@@ -646,6 +694,63 @@ def create_wine_card(wine):
     )
 
 
+def create_mocktail_card(mocktail):
+    """Helper function to create mocktail cards"""
+    image_path = get_image_path(mocktail['image'])
+    return dbc.Card(
+        [
+            dbc.CardHeader(
+                [
+                    html.H3(
+                        [
+                            mocktail['name'],
+                            html.Span(" ★ Premium Selection", className="ms-2", style={'fontSize': '14px', 'fontStyle': 'italic'}) if mocktail['premium'] else None
+                        ],
+                        className="card-title"
+                    )
+                ],
+                style={'backgroundColor': 'black', 'color': '#00FF9D', 'borderBottom': '1px solid #00FF9D'}
+            ),
+            dbc.CardBody(
+                [
+                    dbc.Row(
+                        [
+                            dbc.Col(
+                                html.Img(
+                                    src=image_path,
+                                    style=styles['image'],
+                                    alt=f"{mocktail['name']} mocktail"
+                                ),
+                                md=6
+                            ),
+                            dbc.Col(
+                                [
+                                    html.P(mocktail['description'], className="mb-3"),
+                                    html.Div(
+                                        [
+                                            html.H4("Ingredients", className="mb-2"),
+                                            html.Ul([html.Li(ingredient) for ingredient in mocktail['ingredients']], className="mb-3")
+                                        ]
+                                    ),
+                                    html.Div(
+                                        [
+                                            html.H4("Instructions", className="mb-2"),
+                                            html.Ul([html.Li(step) for step in mocktail['instructions']])
+                                        ]
+                                    )
+                                ],
+                                md=6
+                            )
+                        ]
+                    )
+                ],
+                style={'backgroundColor': 'black', 'color': '#00FF9D'}
+            )
+        ],
+        className="mb-4",
+        style=styles['card']
+    )
+
 # App layout
 app.layout = html.Div(
     [
@@ -654,7 +759,7 @@ app.layout = html.Div(
                 html.H1("The Night Cap", style=styles['title']),
                 html.Div(welcome_message, style=styles['welcome']),
                 
-                # Menu selection dropdown
+                # Updated menu selection dropdown
                 dbc.Row(
                     [
                         dbc.Col(
@@ -664,6 +769,7 @@ app.layout = html.Div(
                                     id='menu-type-dropdown',
                                     options=[
                                         {'label': 'Cocktails', 'value': 'cocktails'},
+                                        {'label': 'Mocktails', 'value': 'mocktails'},
                                         {'label': 'Wines', 'value': 'wines'}
                                     ],
                                     value='cocktails',
@@ -689,7 +795,7 @@ app.layout = html.Div(
     style=styles['page']
 )
 
-# Callback for updating menu guide based on selection
+# Updated callback for menu guide
 @app.callback(
     Output('dynamic-menu-guide', 'children'),
     [Input('menu-type-dropdown', 'value')]
@@ -697,6 +803,8 @@ app.layout = html.Div(
 def update_menu_guide(selected_menu):
     if selected_menu == 'cocktails':
         return menu_layout
+    elif selected_menu == 'mocktails':
+        return mocktails_guide
     else:
         return """📖 Wine Selection Guide 📖
 
@@ -712,7 +820,7 @@ Our carefully curated wine list features exceptional selections from renowned re
 
 Our sommelier is available to help with your selection and food pairings."""
 
-# Callback for updating content based on selection
+# Updated callback for content
 @app.callback(
     Output('dynamic-content', 'children'),
     [Input('menu-type-dropdown', 'value')]
@@ -720,8 +828,10 @@ Our sommelier is available to help with your selection and food pairings."""
 def update_content(selected_menu):
     if selected_menu == 'cocktails':
         return [create_drink_card(drink) for drink in cocktails]
+    elif selected_menu == 'mocktails':
+        return [create_mocktail_card(mocktail) for mocktail in mocktails]
     else:
         return [create_wine_card(wine) for wine in wines]
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host='192.168.12.104', port=8050)
+    app.run_server(debug=True, host='192.168.12.105', port=8050)
